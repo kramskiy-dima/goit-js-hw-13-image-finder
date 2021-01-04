@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[0],{L1EO:function(n,o,s){},QfWi:function(n,o,s){"use strict";s.r(o);s("L1EO");console.log("sss")}},[["QfWi",1]]]);
-//# sourceMappingURL=main.845bec3f1b67215592da.js.map
