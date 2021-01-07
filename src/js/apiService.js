@@ -14,6 +14,7 @@ export default {
   orientation: 'horizontal',
   apiKey: '19685420-fed2cd4121ce12409727a9e3b',
   scroll: window.innerHeight - 50,
+  totalPage: 0,
 
   get query() {
     return this.q;
@@ -26,24 +27,33 @@ export default {
     this.query = value;
     const params = `?q=${this.q}&image_type=${this.image_type}&orientation=${this.orientation}&page=${this.page}&per_page=${this.per_page}&key=${this.apiKey}`;
     const url = this.basicUrl + params;
-    return fetch(url)
-      .then(response => {
-        return response.json();
-      })
-      .then(({ total, hits }) => {
-        if (total === 0) pnotifly.error('Проблемка......');
-        if (total > this.per_page) this.morePageBtn();
+    return (
+      fetch(url)
+        .then(response => {
+          return response.json();
+        })
+        // .then(console.log)
+        .then(({ hits, totalHits }) => {
+          if (totalHits === 0) pnotifly.error('Проблемка......');
 
-        return { hits };
-      })
+          this.totalPage = Math.ceil(totalHits / this.per_page);
+          if (this.totalPage === this.page) {
+            this.hideMorePageBtn();
+          } else {
+            this.morePageBtn();
+          }
 
-      .then(({ hits }) => {
-        this.createImagesList(hits);
-        this.scrollPage();
-      })
-      .then(() => {
-        gallery.addEventListener('click', this.openModal);
-      });
+          return { hits };
+        })
+
+        .then(({ hits }) => {
+          this.createImagesList(hits);
+          this.scrollPage();
+        })
+        .then(() => {
+          gallery.addEventListener('click', this.openModal);
+        })
+    );
   },
 
   openModal(e) {

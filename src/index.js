@@ -20,5 +20,3 @@ function moreImages() {
   api.nextPage();
   api.fetchQuery(api.query);
 }
-
-console.log(api);
